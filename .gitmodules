@@ -2,3 +2,6 @@
 	path = JUCE
 	url = https://github.com/juce-framework/JUCE.git
 	branch = juce7
+[submodule "External/cpl"]
+	path = External/cpl
+	url = https://github.com/sonata-chen/cpl
