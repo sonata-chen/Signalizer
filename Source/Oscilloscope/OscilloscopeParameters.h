@@ -125,7 +125,7 @@
 					{
 						case TimeMode::Cycles:
 						{
-							sprintf_s(buffer, u8"%.2f (%.2f r)", val, cpl::simd::consts<ValueType>::tau * val);
+							sprintf_s(buffer, utf8_literal(u8"%.2f (%.2f r)"), val, cpl::simd::consts<ValueType>::tau * val);
 							buf = buffer;
 							return true;
 						}

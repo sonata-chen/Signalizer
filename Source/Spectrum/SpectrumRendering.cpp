@@ -54,6 +54,7 @@ namespace Signalizer
 	};
 
 	using namespace cpl;
+    using namespace juce::gl;
 
 	/// <summary>
 	///
@@ -545,16 +546,16 @@ namespace Signalizer
 		// TODO: use a monospace font for this part
 		// also: is printf-style really more readable than C++ formatting..
 		sprintf_s(buf,
-			u8"+x:  %s%11.5f Hz\n"
-			u8"+x:  %s\n"
-			u8"+y:  %+9.5f dB\n"
-			u8"+/:  %+7.3f dB\n"
-			u8"\u039Bx:  %s%11.5f Hz\n"
-			u8"\u039Bx:  %s\n"
-			u8"\u039B~:  %6.3f Hz\u03C3\n"
-			u8"\u039By:  %+9.5f dB\n"
-			u8"\u039B/:  %+7.3f dB\n"
-			u8"\u039BSL: +%6.4f dB\u03C3 ",
+			utf8_literal(u8"+x:  %s%11.5f Hz\n"
+			             u8"+x:  %s\n"
+			             u8"+y:  %+9.5f dB\n"
+			             u8"+/:  %+7.3f dB\n"
+			             u8"\u039Bx:  %s%11.5f Hz\n"
+			             u8"\u039Bx:  %s\n"
+			             u8"\u039B~:  %6.3f Hz\u03C3\n"
+			             u8"\u039By:  %+9.5f dB\n"
+			             u8"\u039B/:  %+7.3f dB\n"
+			             u8"\u039BSL: +%6.4f dB\u03C3 "),
 			frequencyIsComplex ? "-i*" : "", mouseFrequency,
 			mouseNote.c_str(),
 			mouseDBs,

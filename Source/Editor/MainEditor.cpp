@@ -150,7 +150,6 @@ namespace Signalizer
 		, params(parameterMap)
 		, AudioProcessorEditor(e)
 		, CTopView(this, "Signalizer main editor")
-		, rcc(this, this)
 		, krenderEngine("Rendering Engine", RenderingEnginesList)
 		, refreshRate(0)
 		, oldRefreshRate(0)
@@ -190,7 +189,8 @@ namespace Signalizer
 		);
 
 		setOpaque(true);
-		setMinimumSize(50, 50);
+        setResizable(true, false);
+        getConstrainer()->setMinimumSize(50, 50);
 		setBounds(0, 0, kdefaultLength, kdefaultHeight);
 		initUI();
 		oglc.setComponentPaintingEnabled(false);
@@ -1318,16 +1318,16 @@ namespace Signalizer
 
 	}
 
-	void MainEditor::resizeEnd()
-	{
-		resized();
-		resume();
-	}
+	// void MainEditor::resizeEnd()
+	// {
+	// 	resized();
+	// 	resume();
+	// }
 
-	void MainEditor::resizeStart()
-	{
-		suspend();
-	}
+	// void MainEditor::resizeStart()
+	// {
+	// 	suspend();
+	// }
 
 	int MainEditor::getViewTopCoordinate() const noexcept
 	{
@@ -1354,10 +1354,10 @@ namespace Signalizer
 	{
 		auto const buttonSize = elementSize - elementBorder * 2;
 		auto const buttonSizeW = elementSize - elementBorder * 2;
-		rcc.setBounds(getWidth() - 15, getHeight() - 15, 15, 15);
+		// rcc.setBounds(getWidth() - 15, getHeight() - 15, 15, 15);
 		// dont resize while user is dragging
-		if (rcc.isMouseButtonDown())
-			return;
+		// if (rcc.isMouseButtonDown())
+		// 	return;
 		// resize panel to width
 		auto const top = tabBarIsVisible ? elementBorder : -elementSize;
 
@@ -1596,8 +1596,8 @@ namespace Signalizer
 			tabs.addTab(viewName);
 
 		// additions
-		addAndMakeVisible(rcc);
-		rcc.setAlwaysOnTop(true);
+		// addAndMakeVisible(rcc);
+		// rcc.setAlwaysOnTop(true);
 		// TODO: reattach?
 		//currentView = &defaultView; // note: enables callbacks on value set in this function
 		addAndMakeVisible(defaultView);

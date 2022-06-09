@@ -41,6 +41,8 @@
 namespace Signalizer
 {
 
+    using namespace juce::gl;
+
 	struct VerticalScreenSplitter
 	{
 		VerticalScreenSplitter(juce::Rectangle<int> clipRectangle, cpl::OpenGLRendering::COpenGLStack & stack, bool doSeparate)

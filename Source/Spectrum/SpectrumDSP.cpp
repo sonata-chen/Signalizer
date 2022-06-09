@@ -837,7 +837,7 @@ namespace Signalizer
 						if (bwForLine > fftBandwidth)
 							break;
 
-						csp[x] = invSize * dsp::linearFilter<std::complex<ftype>>(csf, N, mappedFrequencies[x] * freqToBin);
+						csp[x] = invSize * cpl::dsp::linearFilter<std::complex<ftype>>(csf, N, mappedFrequencies[x] * freqToBin);
 					}
 					break;
 				case SpectrumContent::BinInterpolation::Lanczos:
@@ -848,7 +848,7 @@ namespace Signalizer
 						if (bwForLine > fftBandwidth)
 							break;
 
-						csp[x] = invSize * dsp::lanczosFilter<std::complex<ftype>, true>(csf, N, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
+						csp[x] = invSize * cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
 					}
 					break;
 				default:
@@ -895,7 +895,7 @@ namespace Signalizer
 			case SpectrumChannels::Phase:
 			{
 				// two-for-one pass, first channel is 0... N/2 -1, second is N/2 .. N -1
-				dsp::separateTransformsIPL(csf, N);
+                cpl::dsp::separateTransformsIPL(csf, N);
 
 				// fix up DC and nyquist bins (see previous function documentation)
 				csf[N] = csf[0].imag() * 0.5;
@@ -932,8 +932,8 @@ namespace Signalizer
 							break;
 						}
 
-						auto iLeft = dsp::linearFilter<std::complex<ftype>>(csf, N + 1, mappedFrequencies[x] * freqToBin);
-						auto iRight = dsp::linearFilter<std::complex<ftype>>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin));
+						auto iLeft = cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, mappedFrequencies[x] * freqToBin);
+						auto iRight = cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin));
 
 						auto cancellation = invSize * std::sqrt(Math::square(iLeft + iRight));
 						auto mid = invSize * (std::abs(iLeft) + std::abs(iRight));
@@ -971,8 +971,8 @@ namespace Signalizer
 							normalizedPosition++;
 						}
 
-						auto iLeft = dsp::linearFilter<std::complex<ftype>>(csf, N + 1, binPosition);
-						auto iRight = dsp::linearFilter<std::complex<ftype>>(csf, N + 1, N - binPosition);
+						auto iLeft = cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, binPosition);
+						auto iRight = cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, N - binPosition);
 						// TODO: abs not really needed, because of normalization.
 						wsp[x * 2] = invSize * (std::abs(iLeft) + std::abs(iRight));
 
@@ -991,8 +991,8 @@ namespace Signalizer
 							break;
 						}
 
-						auto iLeft = dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
-						auto iRight = dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin), lanczosFilterSize);
+						auto iLeft = cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
+						auto iRight = cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin), lanczosFilterSize);
 
 						auto cancellation = invSize * std::sqrt(Math::square(iLeft + iRight));
 						auto mid = invSize * (std::abs(iLeft) + std::abs(iRight));
@@ -1021,8 +1021,8 @@ namespace Signalizer
 							normalizedPosition++;
 						}
 
-						auto iLeft = dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
-						auto iRight = dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin), lanczosFilterSize);
+						auto iLeft = cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
+						auto iRight = cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin), lanczosFilterSize);
 
 						wsp[x * 2] = invSize * (std::abs(iLeft) + std::abs(iRight));
 					}
@@ -1107,7 +1107,7 @@ namespace Signalizer
 			case SpectrumChannels::MidSide:
 			{
 				// two-for-one pass, first channel is 0... N/2 -1, second is N/2 .. N -1
-				dsp::separateTransformsIPL(csf, N);
+                cpl::dsp::separateTransformsIPL(csf, N);
 
 				// fix up DC and nyquist bins (see previous function documentation)
 				csf[N] = csf[0].imag() * 0.5;
@@ -1141,8 +1141,8 @@ namespace Signalizer
 							break;
 						}
 
-						auto iLeft = dsp::linearFilter<std::complex<ftype>>(csf, N + 1, mappedFrequencies[x] * freqToBin);
-						auto iRight = dsp::linearFilter<std::complex<ftype>>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin));
+                        auto iLeft = cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, mappedFrequencies[x] * freqToBin);
+						auto iRight = cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin));
 
 						csp[x] = invSize * iLeft;
 						csp[numFilters + x] = invSize * iRight;
@@ -1160,8 +1160,8 @@ namespace Signalizer
 							break;
 						}
 
-						auto iLeft = dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, 5);
-						auto iRight = dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin), lanczosFilterSize);
+						auto iLeft = cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, 5);
+						auto iRight = cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, N - (mappedFrequencies[x] * freqToBin), lanczosFilterSize);
 
 						csp[x] = invSize * iLeft;
 						csp[numFilters + x] = invSize * iRight;
@@ -1268,7 +1268,7 @@ namespace Signalizer
 								if (bwForLine > fftBandwidth)
 									break;
 							}
-							csp[x] = invSize * dsp::linearFilter<std::complex<ftype>>(csf, N + 1, mappedFrequencies[x] * freqToBin);
+							csp[x] = invSize * cpl::dsp::linearFilter<std::complex<ftype>>(csf, N + 1, mappedFrequencies[x] * freqToBin);
 						}
 						break;
 					}
@@ -1283,7 +1283,7 @@ namespace Signalizer
 									break;
 							}
 
-							csp[x] = invSize * dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
+							csp[x] = invSize * cpl::dsp::lanczosFilter<std::complex<ftype>, true>(csf, N + 1, mappedFrequencies[x] * freqToBin, lanczosFilterSize);
 						}
 
 						break;

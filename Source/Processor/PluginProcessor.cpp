@@ -40,7 +40,9 @@ namespace Signalizer
 
 	//==============================================================================
 	AudioProcessor::AudioProcessor()
-		: stream(16, true)
+		: juce::AudioProcessor(BusesProperties().withInput  ("Input",  juce::AudioChannelSet::stereo())
+                                                .withOutput ("Output", juce::AudioChannelSet::stereo()))
+        , stream(16, true)
 		, nChannels(2)
 		, dsoEditor(
 			[this] { return std::make_unique<MainEditor>(this, &this->parameterMap); },
@@ -419,7 +421,7 @@ namespace Signalizer
 
 	const juce::String AudioProcessor::getProgramName(int index)
 	{
-		return juce::String::empty;
+		return juce::String();
 	}
 
 	void AudioProcessor::changeProgramName(int index, const juce::String& newName)

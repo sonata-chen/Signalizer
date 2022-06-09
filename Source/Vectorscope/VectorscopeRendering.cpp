@@ -37,6 +37,7 @@
 
 namespace Signalizer
 {
+    using namespace juce::gl;
 	// swapping the right channel might give an more intuitive view
 
 	static const char * ChannelDescriptions[] = { "+L", "+R", "-L", "-R", "L", "R", "C"};
@@ -419,7 +420,7 @@ namespace Signalizer
 				// TODO: glDrawArrays
 				audio.iterate<2, true>
 				(
-					[&] (std::size_t sampleFrame, AudioStream::DataType & left, AudioStream::DataType & right)
+					[&] (std::size_t sampleFrame, const AudioStream::DataType & left, const AudioStream::DataType & right)
 					{
 						drawer.addVertex(right, left, sampleFrame * sampleFade - 1);
 					}

@@ -55,7 +55,6 @@
 			public		cpl::CTopView,
 			private		cpl::COpenGLView::OpenGLEventListener,
 			protected	cpl::CTextTabBar<>::CTabBarListener,
-			private		juce::ComponentBoundsConstrainer,
 			protected	juce::KeyListener,
 			public		juce::ComponentListener,
 			private		cpl::GUIUtils::NestedMouseInterceptor::Listener
@@ -82,8 +81,8 @@
 			virtual bool keyPressed(const juce::KeyPress &key, juce::Component *originatingComponent) override;
 			void paint(juce::Graphics& g) override;
 			void resized() override;
-			void resizeEnd() override;
-			void resizeStart() override;
+			// void resizeEnd() override;
+			// void resizeStart() override;
 			void focusGained(FocusChangeType cause) override;
 			void focusLost(FocusChangeType cause) override;
 			virtual void mouseDown(const juce::MouseEvent& event) override;
@@ -211,7 +210,7 @@
 
 			std::vector<UniqueHandle<StateEditor>> editorStack;
 			SentientViewState * currentView;
-			juce::ResizableCornerComponent rcc;
+			// juce::ResizableCornerComponent rcc;
 			ParameterMap * params;
 			SharedBehaviour globalState;
 		};
