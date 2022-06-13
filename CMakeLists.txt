@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11 CACHE STRING "Minimum macOS version")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 if (NOT CMAKE_BUILD_TYPE)
@@ -16,7 +16,7 @@ message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 # Global compile options
 add_compile_options(
     # Build with Multiple Processes on Visual Studio
-    $<$<CXX_COMPILER_ID:MSVC>:/MP>
+    # $<$<CXX_COMPILER_ID:MSVC>:/MP>
     # Set source and executable charsets to UTF-8. Required for building on CJK Windows.
     $<$<CXX_COMPILER_ID:MSVC>:/utf-8>
 
