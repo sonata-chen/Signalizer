@@ -27,7 +27,7 @@ add_compile_options(
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 add_subdirectory(JUCE)
-juce_set_vst2_sdk_path("${PROJECT_SOURCE_DIR}\/VST_SDK2")
+# juce_set_vst2_sdk_path(${PROJECT_SOURCE_DIR}/VST_SDK2)
 
 juce_add_plugin(Signalizer
     # VERSION ...                               # Set this if the plugin version is different to the project version
@@ -47,14 +47,10 @@ juce_add_plugin(Signalizer
                                                 # GarageBand 10.3 requires the first letter to be upper-case, and the remaining letters to be lower-case
     LV2URI https://tt.com
     LV2_URI https://tt.com
-    FORMATS AU LV2 VST VST3 Standalone          # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
+    FORMATS AU VST3 Standalone                  # The formats to build. Other valid formats are: AAX Unity VST AU AUv3
     PRODUCT_NAME "Signalizer")                  # The name of the final executable, which can differ from the target name
 
 juce_generate_juce_header(Signalizer)
-
-target_compile_definitions(Signalizer PRIVATE
-    CPL_JUCE=1
-    CPL_JUCE_CMAKE=1)
 
 
 if (APPLE)
@@ -62,10 +58,6 @@ if (APPLE)
     set(VST3_PATH "${CMAKE_BINARY_DIR}/Signalizer_artefacts/${CMAKE_BUILD_TYPE}/VST3/Signalizer.vst3/Contents/Resources/")
     set(VST_PATH "${CMAKE_BINARY_DIR}/Signalizer_artefacts/${CMAKE_BUILD_TYPE}/VST/Signalizer.vst/Contents/Resources/")
     set(AU_PATH "${CMAKE_BINARY_DIR}/Signalizer_artefacts/${CMAKE_BUILD_TYPE}/VST/Signalizer.component/Contents/Resources/")
-
-    add_custom_command(TARGET Signalizer_AU POST_BUILD VERBATIM
-        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Make/Skeleton/ ${AU_PATH}
-    )
 elseif(WIN32)
     message (STATUS "WIN32")
     set(VST3_PATH "${CMAKE_BINARY_DIR}/Signalizer_artefacts/${CMAKE_BUILD_TYPE}/VST3/Signalizer.vst3/Contents/${CMAKE_SYSTEM_PROCESSOR}-win/")
@@ -74,16 +66,25 @@ elseif(UNIX)
     message (STATUS "UNIX")
     set(VST3_PATH "${CMAKE_BINARY_DIR}/Signalizer_artefacts/${CMAKE_BUILD_TYPE}/VST3/Signalizer.vst3/Contents/${CMAKE_SYSTEM_PROCESSOR}-linux/")
     set(VST_PATH "${CMAKE_BINARY_DIR}/Signalizer_artefacts/${CMAKE_BUILD_TYPE}/VST/")
-    target_compile_definitions(Signalizer PRIVATE
-        JUCE_JACK_CLIENT_NAME=JucePlugin_Name)
 endif()
 
-add_custom_command(TARGET Signalizer_VST3 POST_BUILD VERBATIM
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Make/Skeleton/ ${VST3_PATH}
-)
-add_custom_command(TARGET Signalizer_VST POST_BUILD VERBATIM
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Make/Skeleton/ ${VST_PATH}
-)
+if(TARGET Signalizer_VST3)
+    add_custom_command(TARGET Signalizer_VST3 POST_BUILD VERBATIM
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Make/Skeleton/ ${VST3_PATH}
+    )
+endif()
+
+if(TARGET Signalizer_VST)
+    add_custom_command(TARGET Signalizer_VST POST_BUILD VERBATIM
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Make/Skeleton/ ${VST_PATH}
+    )
+endif()
+
+if(TARGET Signalizer_AU)
+    add_custom_command(TARGET Signalizer_AU POST_BUILD VERBATIM
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/Make/Skeleton/ ${AU_PATH}
+    )
+endif()
 
 # if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 # else()
@@ -98,18 +99,17 @@ target_compile_definitions(Signalizer PRIVATE
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_STRICT_REFCOUNTEDPOINTER=1
         JUCE_DISPLAY_SPLASH_SCREEN=0
-        JUCE_MODAL_LOOPS_PERMITTED=1)
+        JUCE_MODAL_LOOPS_PERMITTED=1
+        DONT_SET_USING_JUCE_NAMESPACE=1
+        $<$<BOOL:${UNIX}>:JUCE_JACK_CLIENT_NAME=JucePlugin_Name>)
 
 target_link_libraries(Signalizer
     PRIVATE
         # If we'd created a binary data target, we'd link to it here
         juce::juce_audio_utils
-        juce::juce_graphics
-        juce::juce_dsp
         juce::juce_opengl
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags 
 )
-

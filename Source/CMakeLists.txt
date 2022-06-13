@@ -1,7 +1,24 @@
+# Boost libray installed from homebrew
+if (APPLE)
+    target_sources(Signalizer PRIVATE
+        ../External/cpl/MacSupport.mm
+    )
+    target_include_directories(Signalizer PRIVATE
+        /usr/local/include/
+    )
+    target_link_options(Signalizer PUBLIC
+        /usr/local/lib/libboost_filesystem.a
+    )
+endif()
+
+target_compile_definitions(Signalizer PRIVATE
+    CPL_JUCE=1
+    CPL_JUCE_CMAKE=1)
+
 target_include_directories(Signalizer PRIVATE
     ./
     ./Config
-    ../External/
+    ../External
     ../External/cpl)
 
 target_sources(Signalizer PRIVATE
@@ -24,7 +41,8 @@ target_sources(Signalizer PRIVATE
     # Vectorscope/VectorscopeController.cpp
     Vectorscope/VectorscopeRendering.cpp
 
-    ../External/cpl/CPLSource.cpp)
+    ../External/cpl/CPLSource.cpp
+)
 
     #../External/cpl/AudioStream.cpp
     #../External/cpl/CExclusiveFile.cpp
