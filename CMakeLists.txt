@@ -24,7 +24,7 @@ add_compile_options(
 
     )
 
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 add_subdirectory(JUCE)
 # juce_set_vst2_sdk_path(${PROJECT_SOURCE_DIR}/VST_SDK2)
