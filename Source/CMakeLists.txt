@@ -15,11 +15,11 @@ target_compile_definitions(Signalizer PRIVATE
     CPL_JUCE=1
     CPL_JUCE_CMAKE=1)
 
-target_include_directories(Signalizer PRIVATE
+target_include_directories(Signalizer AFTER PRIVATE
     ./
     ./Config
-    ../External
-    ../External/cpl)
+    ../External)
+    #../External/cpl)
 
 target_sources(Signalizer PRIVATE
     Common/SignalizerDesign.cpp
